@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-func loadTLSCredentialsServer() ([]grpc.ServerOption, error) {
+func LoadTLSCredentialsServer() ([]grpc.ServerOption, error) {
 
 	TLS_AUTHORITY := GetenvStr("TLS_AUTHORITY", "", false)
 
