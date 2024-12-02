@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/go-faster/errors"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
 
