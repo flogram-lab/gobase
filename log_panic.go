@@ -10,14 +10,14 @@ import (
 	"gopkg.in/Graylog2/go-gelf.v2/gelf"
 )
 
-func LogPanic(logger Logger, kind string) {
+func LogPanic(l Logger, kind string) {
 	if r := recover(); r != nil {
 		rs := fmt.Sprintf("recovered from panic: %s", r)
 		ss := fmt.Sprintf("stacktrace from panic: \n%s", debug.Stack())
 		fmt.Println(rs)
 		fmt.Println(ss)
-		if logger != nil {
-			logger.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace)", map[string]any{
+		if l != nil {
+			l.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace)", map[string]any{
 				"err":        rs,
 				"stacktrace": ss,
 			})
@@ -25,15 +25,15 @@ func LogPanic(logger Logger, kind string) {
 	}
 }
 
-func LogPanicErr(errOut *error, logger Logger, kind string, errorTitle string) {
+func LogPanicErr(errOut *error, l Logger, kind string, errorTitle string) {
 	if r := recover(); r != nil {
 		*errOut = errors.New("panic (details hidden): " + errorTitle)
 		rs := fmt.Sprintf("recovered from panic: %s", r)
 		ss := fmt.Sprintf("stacktrace from panic: \n%s", debug.Stack())
 		fmt.Println(rs)
 		fmt.Println(ss)
-		if logger != nil {
-			logger.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace): "+errorTitle, map[string]any{
+		if l != nil {
+			l.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace): "+errorTitle, map[string]any{
 				"err":        rs,
 				"stacktrace": ss,
 			})
@@ -41,14 +41,14 @@ func LogPanicErr(errOut *error, logger Logger, kind string, errorTitle string) {
 	}
 }
 
-func LogPanicExit(logger Logger, kind string) {
+func LogPanicExit(l Logger, kind string) {
 	if r := recover(); r != nil {
 		rs := fmt.Sprintf("recovered from panic (exiting): %s", r)
 		ss := fmt.Sprintf("stacktrace from panic: \n%s", debug.Stack())
 		fmt.Println(rs)
 		fmt.Println(ss)
-		if logger != nil {
-			logger.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace)", map[string]any{
+		if l != nil {
+			l.Message(gelf.LOG_CRIT, kind, "panic (err, stacktrace)", map[string]any{
 				"err":        rs,
 				"stacktrace": ss,
 			})

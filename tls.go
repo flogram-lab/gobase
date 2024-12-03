@@ -50,13 +50,12 @@ func LoadTLSCredentialsServer() ([]grpc.ServerOption, error) {
 	return []grpc.ServerOption{grpc.Creds(tlsCredentials)}, nil
 }
 
-
 func LoadTLSCredentials() (credentials.TransportCredentials, error) {
 
 	TLS_AUTHORITY := GetenvStr("TLS_AUTHORITY", "", false)
 
 	var (
-		serverCertFile   = path.Join(TLS_AUTHORITY, "server-cert.pem") // Mutual TLS ?? And should it be??
+		serverCertFile   = path.Join(TLS_AUTHORITY, "server-cert.pem") // TODO: Mutual TLS ?? And should it be??
 		serverKeyFile    = path.Join(TLS_AUTHORITY, "server-key.pem")
 		clientCACertFile = path.Join(TLS_AUTHORITY, "ca-cert.pem")
 	)
