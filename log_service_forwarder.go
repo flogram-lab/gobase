@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"dario.cat/mergo"
-	"github.com/flogram-lab/gobase"
 	"github.com/flogram-lab/proto"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
@@ -18,7 +17,7 @@ import (
 )
 
 type LogServiceForwarder struct {
-	gobase.Logger
+	Logger
 	addr     string
 	facility string
 	conn     *grpc.ClientConn
@@ -26,8 +25,8 @@ type LogServiceForwarder struct {
 	fields   map[string]any
 }
 
-func NewLogServiceForwarder(facility, addr string) gobase.Logger {
-	creds, err := gobase.LoadTLSCredentials()
+func NewLogServiceForwarder(facility, addr string) Logger {
+	creds, err := LoadTLSCredentials()
 	if err != nil {
 		err = errors.Wrap(err, "LogServiceForwarder: cannot load TLS credentials: %w")
 		panic(err)
@@ -60,7 +59,7 @@ func (logger *LogServiceForwarder) Close() error {
 	return logger.conn.Close()
 }
 
-func (logger *LogServiceForwarder) AddRequestID(requestUid string, fields ...map[string]any) gobase.Logger {
+func (logger *LogServiceForwarder) AddRequestID(requestUid string, fields ...map[string]any) Logger {
 	if oldId, ok := logger.fields["request_uid"]; ok {
 		requestUid = oldId.(string) + "/" + requestUid
 	}
@@ -157,7 +156,7 @@ func (logger *LogServiceForwarder) Write(p []byte) (int, error) {
 	}
 }
 
-func (l *LogServiceForwarder) SetAsDefault() gobase.Logger {
+func (l *LogServiceForwarder) SetAsDefault() Logger {
 	defaultLogger = l
 	return l
 }
